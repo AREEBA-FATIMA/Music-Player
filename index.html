@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container">
+        <div class="music-player">
+            <nav>
+                <div class="circle">
+                    <i class="fas fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+            <img src="image.png" alt="" class="song-img">
+            <h3>Noor-e-Azal</h3>
+            <p>By Atif Aslam and Abida Parveen</p>
+
+            <audio id="song">
+                <source src="music.mp3" type="audio/mpeg">
+            </audio>
+            <input type="range" value="0" id="progress">
+
+            <div class="controls">
+                <div onclick="backward()"><i class="fas fa-backward" id="backward"></i></div>
+                <div onclick="playPause()"><i class="fas fa-play" id="ctrlIcon"></i></div>
+                <div onclick="forward()"><i class="fas fa-forward" id="forward"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let progress = document.getElementById('progress')
+        let song = document.getElementById('song')
+        let ctrlIcon = document.getElementById('ctrlIcon')
+
+        song.onloadedmetadata = function () {
+            progress.max = song.duration
+            progress.value = song.currentTime
+        }
+
+        function playPause(){
+            if(ctrlIcon.classList.contains("fa-pause")){
+                song.pause()
+                ctrlIcon.classList.remove("fa-pause")
+                ctrlIcon.classList.add("fa-play")
+            }else{
+                song.play()
+                ctrlIcon.classList.add("fa-pause")
+                ctrlIcon.classList.remove("fa-play")
+            }
+        }
+
+        if(song.play()){
+            setInterval(()=>{
+                progress.value = song.currentTime
+            },500)
+        }
+
+        function forward(){
+            song.currentTime += 10
+        }
+
+        function backward(){
+            song.currentTime -= 10
+        }
+
+        progress.onchange = function(){
+            song.play();
+            song.currentTime = progress.value
+            ctrlIcon.classList.add("fa-pause")
+            ctrlIcon.classList.remove("fa-play")
+        }
+    </script>
+</body>
+</html>
